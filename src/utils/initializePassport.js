@@ -60,9 +60,8 @@ const initializePassport = () => {
 
   const verifyToken = async (jwt_payload, done) => {
     try {
-      
       if (!jwt_payload) {
-        return done(null, false, { message: 'Usuario no autorizado' });
+        return done(null, false, { message: 'Usuario no encontrado' });
       }
       return done(null, jwt_payload);
     }

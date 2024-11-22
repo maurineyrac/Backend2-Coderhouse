@@ -16,14 +16,12 @@ export const passportCallView = (strategy) => {
     return async (req, res, next) => {
         passport.authenticate(strategy, (err, user, info) => {
             if (err) return next(err);
-
             if (!user) {
-                
-                req.user = null; 
-                return next(); 
+                req.user = null;
+                return next();
             }
-
-            req.user = user; 
+            console.log(user);
+            req.user = user;
             next();
         })(req, res, next);
     };

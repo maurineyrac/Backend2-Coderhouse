@@ -29,16 +29,15 @@ const router = Router()
 //   res.send({ satus: 'success', message: 'fallo la login' })
 // })
 
-
 router.post('/register', async (req, res) => {
   try {
     const { first_name, last_name, email, password } = req.body
     if (!email || !password) {
-      return res.status(400).send({ status: 'error', error: 'email y password son requeridos' })
+      return res.status(400).send({ status: 'error', error: 'Email y password son requeridos' })
     }
     const userExist = await userModel.findOne({ email })
     if (userExist) {
-      return res.status(401).send({ status: 'error', error: 'el usuario ya existe' })
+      return res.status(401).send({ status: 'error', error: 'El usuario ya existe' })
     }
     const newUser = {
       first_name,
@@ -50,36 +49,31 @@ router.post('/register', async (req, res) => {
     res.redirect('/login')
   } catch (error) {
     console.log(error)
-    res.send({ status: 'error', error: 'error al registrar el usuario' })
+    res.send({ status: 'error', error: 'Error al registrar el usuario' })
   }
 })
 
 router.post('/login', async (req, res) => {
 try {
   const { email, password } = req.body
-  
   const userExist = await userModel.findOne({ email })
-  
-
   if (!userExist) {
-    return res.send({ status: 'error', error: 'no existe el usuario' })
+    return res.send({ status: 'error', error: 'No existe el usuario' })
   }
-
+  // comparar la contraseña hasheada
   const isPasswordValid = isValidPassword(password, userExist.password)
-
   if (!isPasswordValid) {
-      return res.send({status: 'error', error: 'el email o la contraseña no coinciden'})
+      return res.send({status: 'error', error: 'El email o la contraseña no coinciden'})
   }
-
-  
-  const token = generateToken({ id: userExist._id, email: userExist.email, role: 'user' })
-
+  const token = generateToken(userExist)
   res.cookie('token', token, {
     maxAge: 60 * 60 * 1000 * 24, // un día 24h
     httpOnly: true
   })
-  !token ? createResponse(req, res, 404, null, token) : createResponse(req, res, 200, token);
-
+// respuesta en formato json
+// !token ? createResponse(req, res, 404, null, token) : createResponse(req, res, 200, token);
+// respuesta en formato redirección a las vistas de handlebars
+!token ? res.redirect('/login') : res.redirect('/');
 } catch (error) {
   console.log(error)
   res.send({ status: 'error', error: 'error al loguear el usuario' })
