@@ -1,0 +1,33 @@
+{{! Description: Main view of the application }}
+{{#if user.email }}
+  <div class="flex justify-center items-center h-screen bg-gray-200">
+    <div class="bg-white p-8 rounded shadow-md w-96">
+      <h1 class="text-3xl font-bold mb-4">User Panel</h1>
+      <p class="text-gray-700 text-sm font-bold mb-2">Name: {{user.first_name}}</p>
+      <p class="text-gray-700 text-sm font-bold mb-2">Last Name: {{user.last_name}}</p>
+      <p class="text-gray-700 text-sm font-bold mb-2">Email: {{user.email}}</p>
+      <button class="bg-blue-500 text-white p-2 rounded mt-2">
+        <a href="api/sessions/logout" class="block text-center">Logout</a>
+      </button>
+    </div>
+  </div>
+{{else}}
+  <div class="flex justify-center items-center h-screen bg-gray-200">
+    <div class="bg-white p-8 rounded shadow-md w-96">
+      <h1 class="text-3xl font-bold mb-4">User Panel</h1>
+      <p class="text-gray-700 text-sm font-bold mb-2">You are not logged in</p>
+      <button class="bg-blue-500 text-white p-2 rounded mt-2">
+        <a href="/login" class="block text-center">Login</a>
+      </button>
+      <button class="bg-blue-500 text-white p-2 rounded mt-2">
+        <a href="/register" class="block text-center">Register</a>
+      </button>
+    </div>
+  </div>
+{{/if}}
+  
+
+
+
+
+
