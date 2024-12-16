@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import { passportCallView } from '../middlewares/passportCall.js';
-import { userModel } from '../dao/mongoDB/models/users.model.js';
+import { userModel } from '../dao/mongoDB/models/user.model.js';
 import { checkAuthorized } from '../middlewares/checkAuthorized.js';
 
 const router = Router();

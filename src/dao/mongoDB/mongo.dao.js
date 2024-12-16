@@ -37,7 +37,7 @@ export default class MongoDao {
 
   delete = async (id) => {
     try {
-      return await this.model.findByIdAndDelete({ _id: id });
+      return await this.model.findByIdAndDelete({ _id: id })
     } catch (error) {
       throw new Error(error);
     }

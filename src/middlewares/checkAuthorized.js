@@ -1,4 +1,4 @@
-import { userModel } from "../dao/mongoDB/models/users.model.js";
+import { userModel } from "../dao/mongoDB/models/user.model.js";
 import { createResponse } from "../utils/utils.js";
 
 export const checkAuthorized = async (req, res, next) => {

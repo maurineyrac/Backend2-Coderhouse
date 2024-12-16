@@ -1,4 +1,4 @@
-import userService from "../services/user.services";
+import userService from "../services/user.services.js";
 
 export default class UserController {
   getAllUsers = async (req, res) => {

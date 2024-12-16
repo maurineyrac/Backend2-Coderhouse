@@ -3,7 +3,7 @@ import Router from 'express'
 import passport from 'passport'
 import { generateToken } from '../../utils/jwt.js'
 import { createHash, createResponse, isValidPassword } from '../../utils/utils.js'
-import { userModel } from '../../dao/mongoDB/models/users.model.js'
+import { userModel } from '../../dao/mongoDB/models/user.model.js'
 import { passportCall } from '../../middlewares/passportCall.js'
 
 
