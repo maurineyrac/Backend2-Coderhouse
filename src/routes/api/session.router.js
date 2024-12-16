@@ -3,7 +3,7 @@ import Router from 'express'
 import passport from 'passport'
 import { generateToken } from '../../utils/jwt.js'
 import { createHash, createResponse, isValidPassword } from '../../utils/utils.js'
-import { userModel } from '../../dao/mongoDB/models/users.models.js'
+import { userModel } from '../../dao/mongoDB/models/users.model.js'
 import { passportCall } from '../../middlewares/passportCall.js'
 
 
@@ -86,10 +86,8 @@ router.get('/logout', async (req, res) => {
 })
 
 router.get('/current', passportCall('current'), async (req, res) => {
+  // usar dto para no mostrar contraseña
   try {
-    if (!req.user) {
-      return createResponse(req, res, 401, null, 'Usuario no autorizado')
-    }
     const user = await userModel.findOne({ email: req.user.email })
     createResponse(req, res, 200, user, 'Usuario autorizado se muestran datos sensibles')
   } catch (error) {

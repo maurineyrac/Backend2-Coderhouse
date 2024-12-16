@@ -1,10 +1,11 @@
 import {Router} from 'express';
 import { passportCallView } from '../middlewares/passportCall.js';
-import { userModel } from '../dao/mongoDB/models/users.models.js';
+import { userModel } from '../dao/mongoDB/models/users.model.js';
 import { checkAuthorized } from '../middlewares/checkAuthorized.js';
 
 const router = Router();
-
+// modificar esta ruta para que sea cuando el usuario se loguea
+// agregar una ruta raiz / que muestre la vista index con productos
 router.get('/', passportCallView('current'), async (req, res) => {
   try {
     // Renderiza la vista con los datos del usuario si está autenticado

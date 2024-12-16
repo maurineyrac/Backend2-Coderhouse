@@ -1,15 +1,11 @@
-import { userModel } from "../dao/mongoDB/models/users.models.js";
+import { userModel } from "../dao/mongoDB/models/users.model.js";
 import { createResponse } from "../utils/utils.js";
 
 export const checkAuthorized = async (req, res, next) => {
 
   try {
     const user = req.user;
-    console.log(user); 
-    if (!user) {
-      res.redirect('/login');
-    }
-    else if (user.role == 'admin') {
+    if (user.role == 'admin') {
       return next();
     }
     else {

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { userModel } from "../../dao/mongoDB/models/users.models.js";
+import { userModel } from "../../dao/mongoDB/models/users.model.js";
 
 const router = Router();
 
@@ -12,20 +12,20 @@ router.get("/", async (req, res) => {
   }
 });
 
-// router.post("/", async (req, res) => {
-//   try {
-//     const { first_name, last_name, email } = req.body;
-//     if (!email) {
-//       res.status(400).send({ status: "failed", message: "Email is required" });
-//       return;
-//     }
-//     const result = await userModel.create({ first_name, last_name, email });
-//     res.status(201).send({ status: "success", data: result });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send({ status: "failed", message: "Internal server error" });
-//   }
-// });
+router.post("/", async (req, res) => {
+  try {
+    const { first_name, last_name, email } = req.body;
+    if (!email) {
+      res.status(400).send({ status: "failed", message: "Email is required" });
+      return;
+    }
+    const result = await userModel.create({ first_name, last_name, email });
+    res.status(201).send({ status: "success", data: result });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ status: "failed", message: "Internal server error" });
+  }
+});
 
 router.get("/:uid", async (req, res) => {
   try {
