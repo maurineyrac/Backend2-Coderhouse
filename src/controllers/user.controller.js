@@ -1,6 +1,6 @@
 import userService from "../services/user.services.js";
 
-export default class UserController {
+class UserController {
   getAllUsers = async (req, res) => {
     try {
       const users = await userService.getAllUsers();
@@ -78,3 +78,5 @@ export default class UserController {
     }
   };
 }
+
+export default UserController

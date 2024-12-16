@@ -1,10 +1,7 @@
 import express from 'express';
 import { connectMongoDB } from './config/mongoDB.config.js';
 import __dirname from './dirname.js';
-// usado con session
-import MongoStore from 'connect-mongo';
-import session from 'express-session';
-//
+import cors from 'cors';
 import handlebars from 'express-handlebars';
 import appRouter from './routes/api/index.router.js'
 import viewsRouter from './routes/views.router.js';
@@ -17,17 +14,11 @@ const app = express();
 
 connectMongoDB();
 
-// usado con estrategia passport local
-// app.use(session({
-//   secret: 'secret',
-// resave: false,
-// saveunitilialized: false,
-// store: MongoStore.create({ mongoUrl: process.env.MONGO_URI, mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true }})
-// }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser());
+app.use(cors());
 
 initializePassport();
 app.use(passport.initialize());
@@ -38,7 +29,7 @@ app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 
 
-app.use('/api',appRouter)
+app.use('/api', appRouter)
 app.use('/', viewsRouter)
 
 
