@@ -1,13 +1,10 @@
 
 import Router from 'express'
-import { generateToken } from '../../utils/jwt.js'
-import { createHash, createResponse, isValidPassword } from '../../utils/utils.js'
-import { userModel } from '../../dao/mongoDB/models/user.model.js'
 import { passportCall } from '../../middlewares/passportCall.js'
-import { Session } from 'express-session'
-import sessionController from '../../controllers/session.controller.js'
+import SessionController from '../../controllers/session.controller.js'
 
 
+const sessionController = new SessionController()
 
 const router = Router()
 

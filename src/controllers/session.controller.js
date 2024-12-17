@@ -22,7 +22,7 @@ class SessionController {
         password: createHash(password)
       }
       await userService.createUser(newUser)
-      res.redirect('/login')
+      res.redirect('/sessions/login')
     } catch (error) {
       console.log(error)
       res.send({ status: 'error', error: 'Error al registrar el usuario' })
@@ -39,17 +39,14 @@ class SessionController {
       // comparar la contraseña hasheada
       const isPasswordValid = isValidPassword(password, userExist.password)
       if (!isPasswordValid) {
-          return res.send({status: 'error', error: 'El email o la contraseña no coinciden'})
+        return res.send({ status: 'error', error: 'El email o la contraseña no coinciden' })
       }
       const token = generateToken(userExist)
       res.cookie('token', token, {
         maxAge: 60 * 60 * 1000 * 24, // un día 24h
         httpOnly: true
       })
-    // respuesta en formato json
-    // !token ? createResponse(req, res, 404, null, token) : createResponse(req, res, 200, token);
-    // respuesta en formato redirección a las vistas de handlebars
-    !token ? res.redirect('/login') : res.redirect('/');
+      !token ? res.redirect('/sessions/login') : res.redirect('/sessions');
     } catch (error) {
       console.log(error)
       res.send({ status: 'error', error: 'error al loguear el usuario' })
@@ -58,7 +55,7 @@ class SessionController {
 
   logout = async (req, res) => {
     res.clearCookie('token')
-    res.redirect('/')
+    res.redirect('/sessions')
   }
 
   current = async (req, res) => {
@@ -71,4 +68,4 @@ class SessionController {
   }
 }
 
-export default new SessionController()
+export default SessionController

@@ -18,7 +18,7 @@ export const passportCallView = (strategy) => {
       if (err) return next(err);
       if (!user) {
         req.user = user;
-        return res.redirect('/login');
+        return res.redirect('/sessions/login');
       }
       req.user = user;
       next();
