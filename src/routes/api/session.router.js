@@ -1,19 +1,17 @@
+import Router from "express";
+import { passportCall } from "../../middlewares/passportCall.js";
+import SessionController from "../../controllers/session.controller.js";
 
-import Router from 'express'
-import { passportCall } from '../../middlewares/passportCall.js'
-import SessionController from '../../controllers/session.controller.js'
+const router = Router();
 
+const { register, login, logout, current } = new SessionController();
 
-const sessionController = new SessionController()
+router.post("/register", register);
 
-const router = Router()
+router.post("/login", login);
 
-router.post('/register', sessionController.register)
+router.get("/logout", logout);
 
-router.post('/login', sessionController.login)
+router.get("/current", passportCall("current"), current);
 
-router.get('/logout', sessionController.logout)
-
-router.get('/current', passportCall('current'), sessionController.current)
-
-export default router
+export default router;
