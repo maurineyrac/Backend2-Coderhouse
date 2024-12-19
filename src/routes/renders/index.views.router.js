@@ -1,6 +1,6 @@
 import { Router } from "express";
-import viewSessionRouter from "./renders/viewSession.router.js";
-import viewProductRouter from "./renders/viewProducts.router.js";
+import viewSessionRouter from "./viewSession.router.js";
+import viewProductRouter from "./viewProducts.router.js";
 
 const router = Router();
 

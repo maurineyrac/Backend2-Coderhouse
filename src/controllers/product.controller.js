@@ -1,4 +1,3 @@
-import e from "express";
 import productService from "../services/product.services.js";
 
 class ProductController {
