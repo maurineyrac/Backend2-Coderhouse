@@ -3,9 +3,9 @@ export default class ProductRepository {
     this.dao = dao;
   }
 
-  getAllProducts = async () => {
+  getAllProducts = async (query, options) => {
     try {
-      return await this.dao.getAllProducts();
+      return await this.dao.getAllProducts(query, options);
     } catch (error) {
       throw error;
     }

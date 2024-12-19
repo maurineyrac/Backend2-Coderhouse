@@ -4,7 +4,9 @@ import viewProductRouter from "./viewProducts.router.js";
 
 const router = Router();
 
+router.use("/", viewProductRouter);
 router.use("/sessions", viewSessionRouter);
 router.use("/products", viewProductRouter);
+
 
 export default router;

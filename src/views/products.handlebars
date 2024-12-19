@@ -1,0 +1,64 @@
+<h1 class="mt-4 flex justify-center text-center text-xl font-bold">Lista de
+  productos</h1>
+<h2 class="flex justify-center text-center text-lg font-semibold mb-4">Actualizar
+  pagina para ver cambios</h2>
+{{#if products.length}}
+<ul id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+  {{#each products}}
+  <li data-id="{{this._id}}" class="flex justify-center">
+    <div class="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow w-full max-w-xs">
+      <img 
+        src="{{this.thumbnail}}" 
+        alt="{{this.title}}" 
+        class="rounded-t-lg w-full h-48 object-cover"
+      />
+      <div class="p-4">
+        <h2 class="text-lg font-semibold text-gray-800 truncate">{{this.title}}</h2>
+        <p class="text-gray-600 text-sm mt-2 mb-4 truncate">{{this.description}}</p>
+        <p class="text-gray-600 text-sm mt-2 mb-4 truncate">Code: {{this.code}}</p>
+        <div class="flex items-center justify-between text-gray-700 text-sm">
+          <span class="font-medium">Price: ${{this.price}}</span>
+          <span>Stock: {{this.stock}}</span>
+        </div>
+        <div class="mt-4 flex items-center justify-between">
+          <span class="text-sm text-gray-500">Category: {{this.category}}</span>
+          <button
+            class="bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-full hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </li>
+  {{/each}}
+</ul>
+
+
+<p class="flex justify-center m-4">Pagina: {{page}}</p>
+
+<!-- Paginación -->
+<div class="flex justify-evenly mt-4 mx-auto max-w-xs">
+  {{#if hasPrevPage}}
+  <a class="p-4 w-32 bg-blue-300  flex justify-center rounded-md" href="?page={{prevPage}}&limit={{limit}}"
+    class="btn">Previous</a>
+  {{/if}}
+
+  {{#if hasNextPage}}
+  <a class="p-4 w-32 bg-blue-300  flex justify-center rounded-md " href="?page={{nextPage}}&limit={{limit}}"
+    class="btn">Next</a>
+  {{/if}}
+</div>
+
+<!-- Botones para cada página -->
+<div class="p-2 flex justify-evenly my-4 mx-auto max-w-lg ">
+  {{#each pages}}
+  <a class=" w-32 bg-blue-300 flex justify-center rounded-md " href="?page={{this}}&limit={{../limit}}"
+    class="btn">{{this}}</a>
+  {{/each}}
+</div>
+
+{{else}}
+<h2 class="flex justify-center text-center text-lg font-semibold text-red-600">La base
+  datos no contiene productos</h2>
+{{/if}}

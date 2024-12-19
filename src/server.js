@@ -4,7 +4,7 @@ import __dirname from './dirname.js';
 import cors from 'cors';
 import handlebars from 'express-handlebars';
 import appRouter from './routes/api/index.router.js'
-import viewsRouter from './routes/views.router.js';
+import viewsRouter from './routes/renders/index.views.router.js'
 import cookieParser from 'cookie-parser';
 import initializePassport from './utils/initializePassport.js';
 import passport from 'passport';
