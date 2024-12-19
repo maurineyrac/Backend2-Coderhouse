@@ -46,7 +46,7 @@ class SessionController {
         maxAge: 60 * 60 * 1000 * 24, // un día 24h
         httpOnly: true
       })
-      !token ? res.redirect('/sessions/login') : res.redirect('/sessions');
+      !token ? res.redirect('/sessions/login') : res.redirect('/sessions/current');
     } catch (error) {
       console.log(error)
       res.send({ status: 'error', error: 'error al loguear el usuario' })
@@ -55,7 +55,7 @@ class SessionController {
 
   logout = async (req, res) => {
     res.clearCookie('token')
-    res.redirect('/sessions')
+    res.redirect('/')
   }
 
   current = async (req, res) => {

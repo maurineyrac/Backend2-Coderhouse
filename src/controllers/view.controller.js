@@ -1,3 +1,4 @@
+import UserDTO from "../dto/user.dto.js";
 import productService from "../services/product.services.js";
 import userService from "../services/user.services.js";
 
@@ -51,20 +52,9 @@ class ViewController {
 
   renderSession = async (req, res) => {
     try {
-      // Renderiza la vista con los datos del usuario si está autenticado
-      if (req.user) {
-        const user = await userService.getByEmail(req.user.email);
-
-        return res.render("session", {
-          user: {
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-          },
-        });
-      }
-
-      res.render("session", { user: req.user });
+ 
+      const userDTO = new UserDTO(req.user);
+      return res.render("session", { user: userDTO });
     } catch (error) {
       console.error("Error al cargar la vista principal:", error);
       res.render("error", { message: "Error al cargar la vista principal" });
@@ -73,17 +63,8 @@ class ViewController {
 
   renderAdmin = async (req, res) => {
     try {
-      // Renderiza la vista con los datos del usuario si está autenticado
-      if (req.user) {
-        const user = await userService.getByEmail(req.user.email);
-        return res.render('admin', {
-          user: {
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-          },
-        });
-      }
+      const userDTO = new UserDTO(req.user);
+      return res.render("admin", { user: userDTO });
     } catch (error) {
       console.error('Error al cargar la vista principal:', error);
       res.render('error', { message: 'Error al cargar la vista principal' });
