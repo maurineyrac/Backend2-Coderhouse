@@ -14,6 +14,15 @@ export default class CartDaoMongo extends MongoDao {
     }
   };
 
+
+  createCart = async (email) => {
+    try {
+      return await this.model.create( email );
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   deleteOne = async (cid) => {
     try {
       return await this.model.deleteOne({ _id: cid });

@@ -27,7 +27,7 @@ class CartController {
 
   createCart = async (req, res) => {
     try {
-      const newCart = await cartService.createCart();
+      const newCart = await cartService.createCart({ email });
       res.status(201).json({ status: "OK", cart: newCart });
     } catch (error) {
       console.log(error);

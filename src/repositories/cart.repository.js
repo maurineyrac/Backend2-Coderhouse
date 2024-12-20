@@ -20,9 +20,17 @@ export default class CartRepository {
     }
   }
 
-  async createCart() {
+  async create() {
     try {
       return await this.dao.create();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async createCart(email) {
+    try {
+      return await this.dao.createCart(email);
     } catch (error) {
       throw new Error(error);
     }

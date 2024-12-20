@@ -1,8 +1,9 @@
+import e from "express"
 import UserDTO from "../dto/user.dto.js"
 import userService from "../services/user.services.js"
 import { generateToken } from "../utils/jwt.js"
 import { createHash, createResponse, isValidPassword } from "../utils/utils.js"
-
+import cartService from "../services/cart.services.js"
 
 class SessionController {
   register = async (req, res) => {
@@ -15,10 +16,14 @@ class SessionController {
       if (userExist) {
         return res.status(401).send({ status: 'error', error: 'El usuario ya existe' })
       }
+
+      let cart = await cartService.createCart({ email })
+
       const newUser = {
         first_name,
         last_name,
         email,
+        cart: cart._id,
         password: createHash(password)
       }
       await userService.createUser(newUser)
