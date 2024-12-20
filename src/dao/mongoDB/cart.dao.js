@@ -6,40 +6,73 @@ export default class CartDaoMongo extends MongoDao {
     super(cartModel);
   }
 
-  getById = async (cid) => {
+  getCartById = async (cid) => {
     try {
       return await this.model.findById(cid).populate("products.productID");
     } catch (error) {
-
+      throw new Error(error);
     }
-  }
+  };
 
   deleteOne = async (cid) => {
-    cart = await cartModel.deleteOne({ _id: cid });
-    return cart;
+    try {
+      return await this.model.deleteOne({ _id: cid });
+    } catch (error) {
+      throw new Error(error);
+    }
   };
 
   addProductToCart = async (cid, pid) => {
-    let isInCart = await cartModel.findOneAndUpdate({ _id: cid, "products.productID": pid }, { $inc: { "products.$.quantity": 1 } }, { new: true });
+    let isInCart = await this.model.findOneAndUpdate(
+      { _id: cid, "products.productID": pid },
+      { $inc: { "products.$.quantity": 1 } },
+      { new: true }
+    );
     if (!isInCart) {
-      isInCart = await cartModel.findByIdAndUpdate(cid, { $push: { products: { productID: pid, quantity: 1 } } }, { new: true });
+      isInCart = await this.model.findByIdAndUpdate(
+        cid,
+        { $push: { products: { productID: pid, quantity: 1 } } },
+        { new: true }
+      );
     }
     return isInCart;
-  }
+  };
 
   deleteProductFromCart = async (cid, pid) => {
-    updatedCart = await cartModel.findByIdAndUpdate(cid, { $pull: { products: { productID: pid } } }, { new: true });
-    return updatedCart;
-  }
+    try {
+      return await this.model.findByIdAndUpdate(
+        cid,
+        { $pull: { products: { productID: pid } } },
+        { new: true }
+      );
+    } catch (error) {
+      throw new Error(error); 
+    }
+  };
 
   updateQuantity = async (cid, pid, quantity) => {
-    updatedCart = await cartModel.findOneAndUpdate({ _id: cid, "products.productID": pid }, { $set: { "products.$.quantity": quantity } }, { new: true });
-    return updatedCart;
-  }
+    try {
+      return await this.model.findOneAndUpdate(
+        { _id: cid, "products.productID": pid },
+        { $set: { "products.$.quantity": quantity } },
+        { new: true }
+      );
+    }
+    catch (error) {
+      throw new Error(error);
+    }
+    
+  };
 
   deleteAllProductsFromCart = async (cid) => {
-    updatedCart = await cartModel.findByIdAndUpdate(cid, { products: [] }, { new: true });
-    return updatedCart;
-  }
-
+    try {
+      return await this.model.findByIdAndUpdate(
+        cid,
+        { products: [] },
+        { new: true }
+      );
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }

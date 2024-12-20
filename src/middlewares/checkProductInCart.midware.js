@@ -1,5 +1,5 @@
 import { request, response } from 'express';
-import CartDaoMongo from '../dao/mongoDB/cart.dao';
+import CartDaoMongo from '../dao/mongoDB/cart.dao.js';
 
 const cartDao = new CartDaoMongo();
 

@@ -7,8 +7,11 @@ export default class ProductDaoMongo extends MongoDao {
   }
 
   getAllProducts = async (query, options) => {
-    const products = await this.model.paginate(query, options);
-    return products;
+    try {
+      return await this.model.paginate(query, options);
+    } catch (error) {
+      throw new Error(error);
+    }
   };
 }
 
