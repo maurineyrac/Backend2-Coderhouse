@@ -1,5 +1,6 @@
 import MongoDao from "./mongo.dao.js";
 import { cartModel } from "./models/cart.model.js";
+import { productModel } from "./models/product.model.js";
 
 export default class CartDaoMongo extends MongoDao {
   constructor() {
@@ -17,7 +18,7 @@ export default class CartDaoMongo extends MongoDao {
 
   createCart = async (email) => {
     try {
-      return await this.model.create( email );
+      return await this.model.create(email);
     } catch (error) {
       throw new Error(error);
     }
@@ -55,7 +56,7 @@ export default class CartDaoMongo extends MongoDao {
         { new: true }
       );
     } catch (error) {
-      throw new Error(error); 
+      throw new Error(error);
     }
   };
 
@@ -63,11 +64,11 @@ export default class CartDaoMongo extends MongoDao {
     try {
       return await this.model.findByIdAndUpdate(
         cid,
-        { $pull: { products: { productID: {$nin: pids } } } },
+        { $pull: { products: { productID: { $nin: pids } } } },
         { new: true }
       );
     } catch (error) {
-      throw new Error(error); 
+      throw new Error(error);
     }
   };
 
@@ -82,7 +83,7 @@ export default class CartDaoMongo extends MongoDao {
     catch (error) {
       throw new Error(error);
     }
-    
+
   };
 
   deleteAllProductsFromCart = async (cid) => {
@@ -96,4 +97,39 @@ export default class CartDaoMongo extends MongoDao {
       throw new Error(error);
     }
   };
+
+  // purchaseCart = async (cid) => {
+  //   try {
+  //     const cart = await this.model.findById(cid).populate("products.productID");
+  //     console.log('cart en purchaseCart',cart);
+  //     let totalCart = 0;
+  //     for (const product of cart.products) {
+  //       const prod = await productModel.findById(product.productID);
+  //       totalCart += Number(prod.price) * Number(product.quantity);
+  //     }
+  //     console.log('total en purchaseCart',totalCart);
+  //     return amount;
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  // };
+  purchaseCart = async (cid) => {
+    try {
+      const cart = await this.model.findById(cid).populate("products.productID");
+      if (!cart) throw new Error("Cart not found");
+
+      // Estructuramos los datos del carrito para incluir detalles de productos
+      const productsDetails = cart.products.map(item => ({
+        productID: item.productID._id,
+        quantity: item.quantity,
+        stock: item.productID.stock,
+        price: item.productID.price,
+      }));
+
+      return productsDetails;
+    } catch (error) {
+      throw new Error(`Error retrieving cart: ${error.message}`);
+    }
+  };
+
 }

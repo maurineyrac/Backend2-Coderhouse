@@ -88,18 +88,10 @@ export default class CartRepository {
 
   async purchaseCart(cid) {
     try {
-      const cart = await this.dao.getCartById(cid);
-      console.log('cart en purchaseCart',cart);
-      let total = 0;
-      for (const product of cart.products) {
-        const prod = await productService.getProductById(product.productID);
-        total += Number(prod.price) * Number(product.quantity);
-      }
-      console.log('total en purchaseCart',total);
-      return total;
-      
+      return await this.dao.purchaseCart(cid);
     } catch (error) {
       throw new Error(error);
+      
     }
   }
 

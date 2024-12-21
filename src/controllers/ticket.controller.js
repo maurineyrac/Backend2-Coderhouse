@@ -3,13 +3,12 @@ import ticketService from "../services/ticket.services.js";
 import productService from "../services/product.services.js";
 
 class TicketController {
-  purchaseCart = async (req, res) => {
+  createTicket = async (req, res) => {
     try {
       const { cid } = req.params;
       const cart = await cartService.getCartById(cid);
-      const amount = await cartService.purchaseCart(cid);
       const user = req.user;
-      console.log("Log de amount", amount);
+
       if (!cart) {
         return res.status(401).json({
           status: "error",
@@ -18,23 +17,22 @@ class TicketController {
       }
 
       const productsNotPurchased = [];
-      console.log("Log de cart.products", cart.products);
+
+      let amount = 0;
       for (const item of cart.products) {
         const product = item.productID;
         const quantity = item.quantity;
         const stock = product.stock;
-
-        console.log("Log de stock", stock);
-
+        const price = product.price;
         if (quantity > stock) {
           productsNotPurchased.push(product._id);
         } else {
           await productService.updateProduct(product._id, {
             stock: stock - quantity,
           });
+          amount += price * quantity;
         }
       }
-      console.log("Log de purchaser", user);
       const ticket = await ticketService.createTicket({
         purchaser: user.email,
         amount: amount,
@@ -54,7 +52,12 @@ class TicketController {
         ticket,
       });
     } catch (error) {
-      throw new Error(error);
+      console.error(error);
+      res.status(500).json({
+        status: "error",
+        message: "Internal server error",
+        error: error.message,
+      });
     }
   };
 }

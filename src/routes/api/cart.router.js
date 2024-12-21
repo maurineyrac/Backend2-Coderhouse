@@ -28,7 +28,7 @@ router.put("/:cid/products/:pid", checkIDs, checkProductInCart, updateQuantity);
 router.delete("/:cid/deleteCart", checkIDs, deleteOne);
 router.delete("/:cid/products/:pid", checkIDs, checkProductInCart, deleteProductFromCart);
 router.delete("/:cid", checkIDs, deleteAllProductsFromCart);
-router.post("/:cid/purchase", passportCallView('current') ,checkIDs, ticketController.purchaseCart);
+router.post("/:cid/purchase", passportCallView('current') ,checkIDs, ticketController.createTicket);
 
 
 export default router;
