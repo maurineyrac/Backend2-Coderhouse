@@ -49,10 +49,16 @@ class ProductController {
 
   createProduct = async (req, res) => {
     try {
+      const options = {
+        
+        lean: true,
+      };
       const product = req.body;
 
-      const products = await productService.getAllProducts();
-      const productExists = products.find((p) => p.code === code);
+      const products = await productService.getAllProducts({}, options);
+
+      console.log(products);
+      const productExists = products.docs.find((p) => p.code === products.docs.code);
 
       if (productExists)
         return res.status(400).json({

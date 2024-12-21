@@ -9,6 +9,6 @@ const ticketSchema = new mongoose.Schema({
   purchaser: { type: String, required: true },
 });
 
-export const TicketModel = mongoose.model(ticketCollection, ticketSchema);
+export const ticketModel = mongoose.model(ticketCollection, ticketSchema);
 
 

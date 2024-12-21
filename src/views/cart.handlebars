@@ -1,0 +1,22 @@
+
+<div class="container mx-auto">
+  <div class="flex justify-center my-6">
+    <div class="w-1/2">
+      <h1 class="text-2xl font-bold">Carrito de compras</h1>
+      <div class="flex justify-between my-4">
+        <p class="font-bold">Producto</p>
+        <p class="font-bold">Precio</p>
+      </div>
+      {{#each products}}
+        <div class="flex justify-between my-2">
+          <p>{{name}}</p>
+          <p>{{price}}</p>
+        </div>
+      {{/each}}
+      <div class="flex justify-between my-4">
+        <p class="font-bold">Total</p>
+        <p class="font-bold">{{total}}</p>
+      </div>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Finalizar compra</button>
+    </div>
+  </div>

@@ -1,3 +1,5 @@
+import productService from "../services/product.services.js";
+
 
 export default class CartRepository {
   constructor(dao) {
@@ -60,6 +62,14 @@ export default class CartRepository {
     }
   }
 
+  async updateProductInCart(cid, pids) {
+    try {
+      return await this.dao.updateProductInCart(cid, pids);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async updateQuantity(cid, pid, quantity) {
     try {
       return await this.dao.updateQuantity(cid, pid, quantity);
@@ -75,4 +85,22 @@ export default class CartRepository {
       throw new Error(error);
     }
   }
+
+  async purchaseCart(cid) {
+    try {
+      const cart = await this.dao.getCartById(cid);
+      console.log('cart en purchaseCart',cart);
+      let total = 0;
+      for (const product of cart.products) {
+        const prod = await productService.getProductById(product.productID);
+        total += Number(prod.price) * Number(product.quantity);
+      }
+      console.log('total en purchaseCart',total);
+      return total;
+      
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
 }

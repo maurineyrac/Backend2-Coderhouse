@@ -59,6 +59,18 @@ export default class CartDaoMongo extends MongoDao {
     }
   };
 
+  updateProductInCart = async (cid, pids) => {
+    try {
+      return await this.model.findByIdAndUpdate(
+        cid,
+        { $pull: { products: { productID: {$nin: pids } } } },
+        { new: true }
+      );
+    } catch (error) {
+      throw new Error(error); 
+    }
+  };
+
   updateQuantity = async (cid, pid, quantity) => {
     try {
       return await this.model.findOneAndUpdate(
