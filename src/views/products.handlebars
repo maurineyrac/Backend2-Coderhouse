@@ -1,71 +1,134 @@
-<nav>
-  <div class="flex justify-between items-center bg-blue-500 p-4">
-    <a href="/" class="text-white font-semibold">Home</a>
+<nav class="flex justify-between items-center bg-blue-500 p-4">
+  <a href="/" class="text-white font-semibold">Home</a>
+  {{#if user}}
+    <a href="/sessions/current" class="text-white font-semibold">Profile</a>
+    <a href="/cart" class="text-white font-semibold">Cart</a>
+    <form action="/api/sessions/logout" method="POST" class="inline">
+      <button type="submit" class="text-white font-semibold">Logout</button>
+    </form>
+  {{else}}
     <a href="/sessions/login" class="text-white font-semibold">Login</a>
-  </div>
+  {{/if}}
 </nav>
 
-<h1 class="mt-4 flex justify-center text-center text-xl font-bold">Lista de
-  productos</h1>
-<h2 class="flex justify-center text-center text-lg font-semibold mb-4">Actualizar
-  pagina para ver cambios</h2>
+<h1 class="mt-4 flex justify-center text-center text-xl font-bold">Lista de productos</h1>
+<h2 class="flex justify-center text-center text-lg font-semibold mb-4">Actualizar pagina para ver cambios</h2>
+
 {{#if products.length}}
-<ul id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
-  {{#each products}}
-  <li data-id="{{this._id}}" class="flex justify-center">
-    <div class="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow w-full max-w-xs">
-      <img 
-        src="{{this.thumbnail}}" 
-        alt="{{this.title}}" 
-        class="rounded-t-lg w-full h-48 object-cover"
-      />
-      <div class="p-4">
-        <h2 class="text-lg font-semibold text-gray-800 truncate">{{this.title}}</h2>
-        <p class="text-gray-600 text-sm mt-2 mb-4 truncate">{{this.description}}</p>
-        <p class="text-gray-600 text-sm mt-2 mb-4 truncate">Code: {{this.code}}</p>
-        <div class="flex items-center justify-between text-gray-700 text-sm">
-          <span class="font-medium">Price: ${{this.price}}</span>
-          <span>Stock: {{this.stock}}</span>
+  <ul id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+    {{#each products}}
+      <li data-id="{{this._id}}" class="flex justify-center">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow w-full max-w-xs">
+          <img src="{{this.thumbnail}}" alt="{{this.title}}" class="rounded-t-lg w-full h-48 object-cover" />
+          <div class="p-4">
+            <h2 class="text-lg font-semibold text-gray-800 truncate">{{this.title}}</h2>
+            <p class="text-gray-600 text-sm mt-2 mb-4 truncate">{{this.description}}</p>
+            <p class="text-gray-600 text-sm mt-2 mb-4 truncate">Code: {{this.code}}</p>
+            <div class="flex items-center justify-between text-gray-700 text-sm">
+              <span class="font-medium">Price: ${{this.price}}</span>
+              <span>Stock: {{this.stock}}</span>
+            </div>
+            <div class="mt-4">
+              <div class="flex items-center space-x-2">
+                <button class="quantity-decrease bg-gray-300 px-3 py-1 rounded" data-product-id="{{this._id}}">-</button>
+                <input
+                  type="number"
+                  class="quantity-input w-16 text-center border rounded"
+                  id="quantity-{{this._id}}"
+                  value="1"
+                  min="1"
+                  max="{{this.stock}}"
+                  data-product-id="{{this._id}}"
+                />
+                <button class="quantity-increase bg-gray-300 px-3 py-1 rounded" data-product-id="{{this._id}}">+</button>
+              </div>
+              <button
+                class="add-to-cart bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-full hover:bg-blue-600 mt-2"
+                data-product-id="{{this._id}}"
+                data-cart-id="{{../cartId}}"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="mt-4 flex items-center justify-between">
-          <span class="text-sm text-gray-500">Category: {{this.category}}</span>
-          <button
-            class="bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-full hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-          >
-            Add to Cart
-          </button>
-        </div>
-      </div>
-    </div>
-  </li>
-  {{/each}}
-</ul>
+      </li>
+    {{/each}}
+  </ul>
 
+  <p class="flex justify-center m-4">Pagina: {{page}}</p>
 
-<p class="flex justify-center m-4">Pagina: {{page}}</p>
+  <!-- Paginación -->
+  <div class="flex justify-evenly mt-4 mx-auto max-w-xs">
+    {{#if hasPrevPage}}
+      <a class="p-4 w-32 bg-blue-300 flex justify-center rounded-md" href="?page={{prevPage}}&limit={{limit}}">Previous</a>
+    {{/if}}
+    {{#if hasNextPage}}
+      <a class="p-4 w-32 bg-blue-300 flex justify-center rounded-md" href="?page={{nextPage}}&limit={{limit}}">Next</a>
+    {{/if}}
+  </div>
 
-<!-- Paginación -->
-<div class="flex justify-evenly mt-4 mx-auto max-w-xs">
-  {{#if hasPrevPage}}
-  <a class="p-4 w-32 bg-blue-300  flex justify-center rounded-md" href="?page={{prevPage}}&limit={{limit}}"
-    class="btn">Previous</a>
-  {{/if}}
-
-  {{#if hasNextPage}}
-  <a class="p-4 w-32 bg-blue-300  flex justify-center rounded-md " href="?page={{nextPage}}&limit={{limit}}"
-    class="btn">Next</a>
-  {{/if}}
-</div>
-
-<!-- Botones para cada página -->
-<div class="p-2 flex justify-evenly my-4 mx-auto max-w-lg ">
-  {{#each pages}}
-  <a class=" w-32 bg-blue-300 flex justify-center rounded-md " href="?page={{this}}&limit={{../limit}}"
-    class="btn">{{this}}</a>
-  {{/each}}
-</div>
-
+  <div class="p-2 flex justify-evenly my-4 mx-auto max-w-lg ">
+    {{#each pages}}
+      <a class="w-32 bg-blue-300 flex justify-center rounded-md" href="?page={{this}}&limit={{../limit}}">{{this}}</a>
+    {{/each}}
+  </div>
 {{else}}
-<h2 class="flex justify-center text-center text-lg font-semibold text-red-600">La base
-  datos no contiene productos</h2>
+  <h2 class="flex justify-center text-center text-lg font-semibold text-red-600">La base datos no contiene productos</h2>
 {{/if}}
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const productList = document.getElementById("productList");
+
+    // Incrementar cantidad
+    productList.addEventListener("click", (e) => {
+      if (e.target.classList.contains("quantity-increase")) {
+        const productId = e.target.dataset.productId;
+        const quantityInput = document.getElementById(`quantity-${productId}`);
+        if (parseInt(quantityInput.value) < parseInt(quantityInput.max)) {
+          quantityInput.value = parseInt(quantityInput.value) + 1;
+        }
+      }
+
+      if (e.target.classList.contains("quantity-decrease")) {
+        const productId = e.target.dataset.productId;
+        const quantityInput = document.getElementById(`quantity-${productId}`);
+        if (parseInt(quantityInput.value) > 1) {
+          quantityInput.value = parseInt(quantityInput.value) - 1;
+        }
+      }
+    });
+
+    // Agregar al carrito
+    productList.addEventListener("click", async (e) => {
+      if (e.target.classList.contains("add-to-cart")) {
+        const productId = e.target.dataset.productId;
+        const cartId = e.target.dataset.cartId;
+        const quantityInput = document.getElementById(`quantity-${productId}`);
+        const quantity = parseInt(quantityInput.value);
+
+        try {
+          const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ quantity }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Error al agregar producto al carrito");
+          }
+
+          const result = await response.json();
+          alert("Producto agregado al carrito con éxito");
+          console.log(result);
+        } catch (error) {
+          console.error(error);
+          alert("Hubo un error al agregar el producto al carrito");
+        }
+      }
+    });
+  });
+</script>

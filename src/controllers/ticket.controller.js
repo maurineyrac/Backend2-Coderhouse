@@ -6,28 +6,16 @@ class TicketController {
   createTicket = async (req, res) => {
     try {
       const { cid } = req.params;
-      const cart = await cartService.getCartById(cid);
       const user = req.user;
-
-      if (!cart) {
-        return res.status(401).json({
-          status: "error",
-          message: "Cart not found",
-        });
-      }
-
       const productsNotPurchased = [];
-
+      const productsDetails = await cartService.purchaseCart(cid);
       let amount = 0;
-      for (const item of cart.products) {
-        const product = item.productID;
-        const quantity = item.quantity;
-        const stock = product.stock;
-        const price = product.price;
+      for (const item of productsDetails) {
+        const {productID, quantity, stock, price} = item;
         if (quantity > stock) {
-          productsNotPurchased.push(product._id);
+          productsNotPurchased.push(productID);
         } else {
-          await productService.updateProduct(product._id, {
+          await productService.updateProduct(productID, {
             stock: stock - quantity,
           });
           amount += price * quantity;
@@ -62,4 +50,4 @@ class TicketController {
   };
 }
 
-export default new TicketController();
+export default  TicketController;

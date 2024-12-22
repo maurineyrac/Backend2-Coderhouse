@@ -1,0 +1,121 @@
+<h1 class="mt-4 flex justify-center text-center text-xl font-bold">Real Time Product List</h1>
+
+<h2 class="flex justify-center text-center text-lg font-semibold">Panel para agregar y ver productos en tiempo real</h2>
+  {{! Formulario para agregar un nuevo producto }}
+<form id="productForm" class="p-8">
+  <div class=" rounded-lg border text-card-foreground shadow-sm bg-[#f3e5f5] mb-4" >
+    <div class="flex flex-col space-y-1.5 p-6 bg-[#9a7d9a] dark:bg-[#6c5b7b] text-white rounded-t-lg">
+      <h3 class="whitespace-nowrap tracking-tight text-2xl font-bold">Add New Product</h3>
+    </div>
+    <div class="grid gap-6 p-6">
+      <div class="grid grid-cols-2 gap-6">
+        <div class="grid gap-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-[#4a148c] text-[#e1bee7]"
+            for="title">
+            Title
+          </label>
+          <input
+            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="title" placeholder="Enter product title" required />
+        </div>
+        <div class="grid gap-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-[#4a148c] text-[#e1bee7]"
+            for="category">
+            Category
+          </label>
+          <input
+            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="category" placeholder="Enter product category" required />
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-6">
+        <div class="grid gap-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-[#4a148c] text-[#e1bee7]"
+            for="price">
+            Price
+          </label>
+          <input
+            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="price" placeholder="Enter price" type="number" min="0" required />
+        </div>
+        <div class="grid gap-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-[#4a148c] text-[#e1bee7]"
+            for="code">
+            Code
+          </label>
+          <input
+            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="code" placeholder="Enter product code" type="number" required />
+        </div>
+        <div class="grid gap-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-[#4a148c] text-[#e1bee7]"
+            for="stock">
+            Stock
+          </label>
+          <input
+            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            id="stock" placeholder="Enter stock quantity" type="number" min="0" required />
+        </div>
+      </div>
+      <div class="grid gap-2">
+        <label
+          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-[#4a148c] text-[#e1bee7]"
+          for="description">
+          Description
+        </label>
+        <textarea
+          class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          id="description" placeholder="Enter product description"></textarea>
+      </div>
+    </div>
+    <div class="items-center bg-[#9a7d9a] dark:bg-[#6c5b7b] flex justify-end p-6 rounded-b-lg">
+      <button
+        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#f3e5f5] text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+        Save Product
+      </button>
+    </div>
+  </div>
+
+</form>
+
+<ul id="productList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+  {{! Renderizo los productos almacenados inicialmente en la base de datos }}
+  {{#each updatedProducts}}
+  <li data-id="{{this.id}}" class="flex justify-center">
+    <div class="border text-card-foreground w-full max-w-sm bg-[#f4f0f7] rounded-lg shadow-lg mb-4">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-2xl font-bold text-[#6c5b7b]">{{this.title}}</h2>
+          <span class="text-lg font-semibold text-[#9a7d9a]">$
+            {{this.price}}</span>
+        </div>
+        <p class="text-[#8d7b99] mb-4">
+          {{this.description}}
+        </p>
+        <div class="flex items-center justify-between text-sm text-[#9a7d9a] mb-4">
+          <span>Product Code: {{this.code}} </span>
+          <span>Stock: {{this.stock}}</span>
+        </div>
+        <div class="flex items-center justify-between text-sm text-[#9a7d9a]">
+          <span>Category: {{this.category}}</span>
+          <button
+            class="delete-button inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 rounded-full">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </li>
+  {{/each}}
+</ul>
+
+{{! Paquete de socket io }}
+<script src="/socket.io/socket.io.js"></script>
+{{! Nuestro script }}
+<script src="/js/realtimeproducts.js"></script>

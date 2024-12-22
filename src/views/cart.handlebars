@@ -1,3 +1,15 @@
+<nav class="flex justify-between items-center bg-blue-500 p-4">
+  <a href="/" class="text-white font-semibold">Home</a>
+  {{#if user}}
+    <a href="/sessions/current" class="text-white font-semibold">Profile</a>
+    <a href="/cart" class="text-white font-semibold">Cart</a>
+    <form action="/api/sessions/logout" method="POST" class="inline">
+      <button type="submit" class="text-white font-semibold">Logout</button>
+    </form>
+  {{else}}
+    <a href="/sessions/login" class="text-white font-semibold">Login</a>
+  {{/if}}
+</nav>
 
 <div class="container mx-auto">
   <div class="flex justify-center my-6">
@@ -6,17 +18,53 @@
       <div class="flex justify-between my-4">
         <p class="font-bold">Producto</p>
         <p class="font-bold">Precio</p>
+        <p class="font-bold">Cantidad</p>
       </div>
       {{#each products}}
-        <div class="flex justify-between my-2">
-          <p>{{name}}</p>
-          <p>{{price}}</p>
-        </div>
+      <div class="flex justify-between my-2">
+        <p>Nombre: {{this.title}}</p>
+        <p>Precio: {{this.price}}</p>
+        <p>Ctdad: {{this.quantity}}</p>
+      </div>
       {{/each}}
+
       <div class="flex justify-between my-4">
         <p class="font-bold">Total</p>
         <p class="font-bold">{{total}}</p>
       </div>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Finalizar compra</button>
+      <button id="purchaseButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        data-cart-id="{{cartId}}">Finalizar compra</button>
     </div>
   </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const purchaseButton = document.getElementById("purchaseButton"); 
+    
+    purchaseButton.addEventListener("click", async () => {
+      const cartId = purchaseButton.dataset.cartId; 
+      console.log("Cart ID:", cartId);
+      try {
+        const response = await fetch(`/api/carts/${cartId}/purchase`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Error al procesar la compra.");
+        }
+
+        const result = await response.json();
+        alert("Compra realizada con éxito.");
+        console.log(result);
+        window.location.href = "/";
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Hubo un error al procesar la compra.");
+      }
+    });
+  });
+</script>

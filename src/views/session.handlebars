@@ -9,12 +9,16 @@
         {{user.last_name}}</p>
       <p class="text-gray-700 text-sm font-bold mb-2">Email: {{user.email}}</p>
       <p class="text-gray-700 text-sm font-bold mb-2">Role: {{user.role}}</p>
-      <button class="bg-blue-500 text-white p-2 rounded mt-2">
-        <a href="/api/sessions/logout" class="block text-center">Logout</a>
+      <div class="flex">
+        <form action="/api/sessions/logout" method="POST" class="flex" >
+        <button class="bg-blue-500 text-white p-2 rounded mr-2 text-center">
+        <p class="block text-center">Logout</p>
       </button>
+      </form>
       <button class="bg-blue-500 text-white p-2 rounded text-center">
         <a href="/" class="block text-center">Ir a comprar</a>
       </button>
+      </div>
     </div>
   </div>
 {{else}}

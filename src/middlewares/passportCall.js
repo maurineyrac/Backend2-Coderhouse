@@ -24,4 +24,22 @@ export const passportCallView = (strategy) => {
       next();
     })(req, res, next);
   };
+
+  
+};
+
+
+export const passportPublicView = (strategy) => {
+  return async (req, res, next) => {
+    passport.authenticate(strategy, (err, user, info) => {
+      if (err) return next(err);
+      if (!user) {
+        req.user = {}
+        return next();
+      }
+      req.user = user;
+      next();
+    })(req, res, next);
+  }
+  
 };

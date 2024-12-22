@@ -1,13 +1,9 @@
-import TicketDaoMongo from "../dao/mongoDB/ticket.dao.js";
-
-const ticketDao = new TicketDaoMongo();
-
 export default class TicketRepository {
-  constructor() {
-    this.dao = ticketDao;
+  constructor(dao) {
+    this.dao = dao;
   }
 
-createTicket = async (ticket) => {
+  createTicket = async (ticket) => {
     try {
       return await this.dao.create(ticket);
     } catch (error) {

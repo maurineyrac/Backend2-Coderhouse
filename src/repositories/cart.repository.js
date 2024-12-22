@@ -1,6 +1,3 @@
-import productService from "../services/product.services.js";
-
-
 export default class CartRepository {
   constructor(dao) {
     this.dao = dao;
@@ -9,6 +6,14 @@ export default class CartRepository {
   async getAllCarts() {
     try {
       return await this.dao.getAll();
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getCartByEmail(email) {
+    try {
+      return await this.dao.getByEmail(email);
     } catch (error) {
       throw new Error(error);
     }

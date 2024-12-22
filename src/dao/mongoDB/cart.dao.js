@@ -1,15 +1,23 @@
 import MongoDao from "./mongo.dao.js";
 import { cartModel } from "./models/cart.model.js";
-import { productModel } from "./models/product.model.js";
 
 export default class CartDaoMongo extends MongoDao {
   constructor() {
     super(cartModel);
   }
 
+  getByEmail = async (email) => {
+    try {
+      return await this.model.findOne({
+        email: email,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
   getCartById = async (cid) => {
     try {
-      return await this.model.findById(cid).populate("products.productID");
+      return await this.model.findById(cid).populate("products.productID").lean();
     } catch (error) {
       throw new Error(error);
     }
@@ -120,6 +128,7 @@ export default class CartDaoMongo extends MongoDao {
 
       // Estructuramos los datos del carrito para incluir detalles de productos
       const productsDetails = cart.products.map(item => ({
+        title: item.productID.title,
         productID: item.productID._id,
         quantity: item.quantity,
         stock: item.productID.stock,

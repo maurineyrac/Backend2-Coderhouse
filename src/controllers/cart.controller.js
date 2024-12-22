@@ -15,6 +15,7 @@ class CartController {
     try {
       const { cid } = req.params;
       const cart = await cartService.getCartById(cid);
+      console.log(cart);
       if (!cart)
         return res.status(404).json({ status: "Error", msg: "Cart not found" });
 
@@ -57,6 +58,9 @@ class CartController {
   addProductToCart = async (req, res) => {
     try {
       const { cid, pid } = req.params;
+      const { quantity } = req.body;
+
+      console.log(quantity);
       const cart = await cartService.addProductToCart(cid, pid);
       res
         .status(201)

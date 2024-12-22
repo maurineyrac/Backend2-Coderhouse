@@ -1,7 +1,7 @@
 import UserDTO from "../dto/user.dto.js";
 import productService from "../services/product.services.js";
 import userService from "../services/user.services.js";
-
+import cartService from "../services/cart.services.js";
 class ViewController {
   renderProducts = async (req, res) => {
     try {
@@ -13,6 +13,23 @@ class ViewController {
         sort: { price: sort == "asc" ? 1 : -1 },
         lean: true,
       };
+
+      let userDTO = null; 
+      let cartId = null;
+  
+      if (req.user) {
+        try {
+          const user = await userService.getUserById(req.user.userId);
+          if (user) { 
+            userDTO = new UserDTO(user);
+            cartId = userDTO.cart.toString();
+          } else {
+            console.log('No se encontró el usuario con ID:', req.user.userId);
+          }
+        } catch (error) {
+          console.log('Error al obtener el usuario:', error);
+        }
+      }
 
       let query = {};
 
@@ -35,6 +52,8 @@ class ViewController {
       res.render("products", {
         styles,
         products,
+        user: userDTO,
+        cartId,
         limit: productsDB.limit,
         totalPages: productsDB.totalPages,
         page: productsDB.page,
@@ -52,7 +71,6 @@ class ViewController {
 
   renderSession = async (req, res) => {
     try {
- 
       const userDTO = new UserDTO(req.user);
       return res.render("session", { user: userDTO });
     } catch (error) {
@@ -78,6 +96,25 @@ class ViewController {
   renderRegister = (req, res) => {
     res.render("register");
   };
+
+  renderCart = async (req, res) => {
+    try {
+      const user = await userService.getUserById(req.user.userId);
+      const userDTO = new UserDTO(user);
+      const products = await cartService.purchaseCart(userDTO.cart);
+      
+      
+      res.render("cart", {
+        user: userDTO, 
+        cartId: userDTO.cart.toString(), 
+        products: products,
+        total: products.reduce((acc, item) => acc + item.quantity * item.price, 0)
+      });
+    } catch (error) {
+      console.error("Error al cargar la vista principal:", error);
+      res.render("error", { message: "Error al cargar la vista principal" });
+    }
+  }
 }
 
 export default ViewController;

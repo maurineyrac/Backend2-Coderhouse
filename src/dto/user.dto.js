@@ -5,6 +5,7 @@ class UserDTO {
     this.full_name = `${newUser.first_name} ${newUser.last_name}`;
     this.email = newUser.email;
     this.role = newUser.role;
+    this.cart = newUser.cart;
   }
 }
 

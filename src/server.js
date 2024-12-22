@@ -8,7 +8,7 @@ import viewsRouter from './routes/renders/index.views.routes.js'
 import cookieParser from 'cookie-parser';
 import initializePassport from './utils/initializePassport.js';
 import passport from 'passport';
-import Api from 'twilio/lib/rest/Api.js';
+import { Server } from 'socket.io';
 
 const PORT = 8080;
 const app = express();
@@ -29,11 +29,26 @@ app.engine("handlebars", handlebars.engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 
+app.use((req, res, next) => {
+  req.io = socketServer;
+  next();
+});
+
 
 app.use('/api', apiRouter)
 app.use('/', viewsRouter)
 
 
-app.listen(PORT, () => {
-  console.log('Server is running on port 8080');
+const httpServer = app.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto: ${PORT}`);
+});
+
+export const socketServer = new Server(httpServer);
+
+socketServer.on("connection", (socket) => {
+  
+  console.log("Nuevo cliente conectado!");
+  socket.on("disconnect", () => {
+      console.log("Cliente desconectado");
+  });
 });
