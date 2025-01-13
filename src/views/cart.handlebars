@@ -19,12 +19,14 @@
         <p class="font-bold">Producto</p>
         <p class="font-bold">Precio</p>
         <p class="font-bold">Cantidad</p>
+        <p class="font-bold">Borrar </p>
       </div>
       {{#each products}}
       <div class="flex justify-between my-2">
-        <p>Nombre: {{this.title}}</p>
-        <p>Precio: {{this.price}}</p>
-        <p>Ctdad: {{this.quantity}}</p>
+        <p>{{this.title}}</p>
+        <p>{{this.price}}</p>
+        <p>{{this.quantity}}</p>
+        <button id="deleteButton" data-cart-id="{{../cartId}}" data-product-id="{{this.productID}}"  >Borrar</button>
       </div>
       {{/each}}
 
@@ -41,8 +43,9 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const purchaseButton = document.getElementById("purchaseButton"); 
-    
+    const deleteButton = document.getElementById("deleteButton");
     purchaseButton.addEventListener("click", async () => {
+
       const cartId = purchaseButton.dataset.cartId; 
       console.log("Cart ID:", cartId);
       try {
@@ -66,5 +69,31 @@
         alert("Hubo un error al procesar la compra.");
       }
     });
+    deleteButton.addEventListener("click", async () => {
+      const cartId = deleteButton.dataset.cartId;
+      const productId = deleteButton.dataset.productId;
+      try {
+        const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Error al procesar la compra.");
+        }
+
+        const result = await response.json();
+        alert("Producto eliminado con éxito.");
+        console.log(result);
+        window.location.href = "/cart";
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Hubo un error al eliminar el producto del carrito.");
+      }
+    });
   });
+  
+
 </script>
