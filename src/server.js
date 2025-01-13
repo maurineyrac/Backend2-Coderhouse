@@ -5,6 +5,7 @@ import cors from 'cors';
 import handlebars from 'express-handlebars';
 import apiRouter from './routes/api/index.routes.js'
 import viewsRouter from './routes/renders/index.views.routes.js'
+import mailingRouter from './routes/mailing.router.js'
 import cookieParser from 'cookie-parser';
 import initializePassport from './utils/initializePassport.js';
 import passport from 'passport';
@@ -37,6 +38,8 @@ app.use((req, res, next) => {
 
 app.use('/api', apiRouter)
 app.use('/', viewsRouter)
+app.use('/mail', mailingRouter)
+
 
 
 const httpServer = app.listen(PORT, () => {

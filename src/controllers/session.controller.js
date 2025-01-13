@@ -1,4 +1,3 @@
-import e from "express"
 import UserDTO from "../dto/user.dto.js"
 import userService from "../services/user.services.js"
 import { generateToken } from "../utils/jwt.js"

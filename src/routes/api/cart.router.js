@@ -1,4 +1,4 @@
-import Router from "express";
+import {Router} from "express";
 import CartController from "../../controllers/cart.controller.js";
 import ticketController from "../../controllers/ticket.controller.js";
 import { checkIDs } from "../../middlewares/checkMongoID.midware.js";

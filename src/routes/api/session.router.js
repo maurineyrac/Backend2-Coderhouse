@@ -1,4 +1,4 @@
-import Router from "express";
+import {Router} from "express";
 import { passportCall } from "../../middlewares/passportCall.js";
 import SessionController from "../../controllers/session.controller.js";
 

@@ -5,9 +5,11 @@
       <p class="text-gray-700 text-sm font-bold mb-2">Name: {{user.first_name}}</p>
       <p class="text-gray-700 text-sm font-bold mb-2">Last Name: {{user.last_name}}</p>
       <p class="text-gray-700 text-sm font-bold mb-2">Email: {{user.email}}</p>
-      <button class="bg-blue-500 text-white p-2 rounded mt-2">
-        <a href="api/sessions/logout" class="block text-center">Logout</a>
+      <form action="/api/sessions/logout" method="POST" class="flex" >
+        <button class="bg-blue-500 text-white p-2 rounded mr-2 text-center">
+        <p class="block text-center">Logout</p>
       </button>
+      </form>
     </div>
   </div>
 

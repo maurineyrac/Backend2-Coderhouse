@@ -1,4 +1,4 @@
-import Router  from "express";
+import {Router}  from "express";
 import ProductController from "../../controllers/product.controller.js";
 import { checkProductData } from "../../middlewares/checkProductData.midware.js";
 import { checkIDs } from "../../middlewares/checkMongoID.midware.js";
